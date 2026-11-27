@@ -1,59 +1,52 @@
 #pragma once
 
-#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 
 enum class WallCollisions
 {
-	NONE, 
-	TOPBOTTOMWALL,
-	PLAYERSIDE,
-	ENEMYSIDE
+    NONE,
+    TOPBOTTOMWALL,
+    PLAYERSIDE,
+    ENEMYSIDE
 };
 
 class Ball
 {
 public:
-	// Constructor
-	Ball(const sf::Vector2f& startPos, const sf::Vector2f& startDir);
+    Ball(const sf::Vector2f& startPos, const sf::Vector2f& startDir);
 
-	// Render
-	void Render(sf::RenderTarget& target);
+    void Render(sf::RenderTarget& target) const;
 
-	// Movement
-	void Update(const float& dt);
-	void ReboundX();
-	void ReboundY();
-	void Rebound(sf::Vector2f dir);
-	void IncrementSpeed();
-	void Respawn();
+    // Movement
+    void Update(float dt);
+    void Rebound(sf::Vector2f newDir);
+    void IncrementSpeed();
+    void Respawn();
+    void SetX(float x);
 
-	// Collision
-	WallCollisions DoWallCollisions(const sf::FloatRect& walls);
+    // Collision
+    WallCollisions DoWallCollisions(const sf::FloatRect& walls);
 
-	// Getters
-	sf::FloatRect GetRect() const;
-	const sf::Vector2f GetPosition() const;
-	const sf::Vector2f GetDirection() const;
+    // Getters
+    sf::FloatRect GetRect() const;
+    sf::Vector2f GetPosition() const;
+    sf::Vector2f GetDirection() const;
+    float GetDiameter() const;
 
 private:
-	// Shape
-	sf::CircleShape ball;
-	static constexpr float radius = 7.0f;
-	sf::Color color;
+    static constexpr float radius = 7.0f;
+    static constexpr float speedRate = 20.0f;
+    static constexpr float startSpeed = 500.0f;
+    // How far past the left or right edge the ball travels before it
+    // counts as a point, so it visibly leaves the screen first.
+    static constexpr float goalMargin = 200.0f;
 
-	// Movement
-	static constexpr float speedRate = 20.0f;
-	static constexpr float startSpeed = 500.0f;
-	const sf::Vector2f startPos;
-	sf::Vector2f startDir;
-	sf::Vector2f pos;
-	sf::Vector2f dir;
-	int startDirX = 1; // Aux variable to change direction between scores
-	float speed;
+    sf::CircleShape ball;
 
-	// Functions
-	void NormalizeDir();
+    const sf::Vector2f startPos;
+    const sf::Vector2f startDir;
+    sf::Vector2f pos;
+    sf::Vector2f dir;
+    float startDirX = 1.0f; // Serves alternate sides after each point
+    float speed = startSpeed;
 };
-

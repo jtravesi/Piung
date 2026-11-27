@@ -1,0 +1,14 @@
+Bit5x3
+Copyright Matt LaGrandeur 2011
+https://www.mattlag.com/bitfonts/
+
+This copy of the font was made with FontStruct and its metadata licenses
+it under Creative Commons Attribution-ShareAlike 3.0 Unported
+(CC BY-SA 3.0): https://creativecommons.org/licenses/by-sa/3.0/
+
+The author's site now offers the Bit fonts under the SIL Open Font
+License (OFL). Either way, the font may be redistributed with credit to
+its author.
+
+These licenses cover the font file only. The rest of Piung is MIT
+licensed (see LICENSE at the root of the repository).

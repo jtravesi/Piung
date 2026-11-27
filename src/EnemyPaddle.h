@@ -3,27 +3,26 @@
 #include "Paddle.h"
 #include <random>
 
-class EnemyPaddle :
-	public Paddle
+class EnemyPaddle : public Paddle
 {
 public:
-	// Constructor
-	EnemyPaddle(sf::Vector2f pos, float width, float height);
+    EnemyPaddle(sf::Vector2f pos, float width, float height);
 
-	// Movement
-	void MoveTowards(float yDest);
-	virtual void Update(const float& dt, const Ball& ball, const sf::FloatRect& walls);
+    void Update(float dt, const Ball& ball, const sf::FloatRect& walls) override;
 
 private:
-	// Direction in Y axis of movement, used to follow the ball
-	static constexpr float movementDelay = 0.25f;
-	float dirY = 1.0f;
-	float timer = 0.0f;
-	std::random_device rd;
-	std::mt19937 rnd;
-	std::uniform_real_distribution<> dist;
+    // The AI only re-aims every movementDelay seconds, like a reaction time.
+    static constexpr float movementDelay = 0.25f;
+    // It stops moving once its centre is this close to where it aims.
+    static constexpr float deadZone = 50.0f;
+    // Random error added to each aim, in pixels, so it can miss.
+    static constexpr float aimError = 50.0f;
 
-	// Private methods
-	float CalculateYGoal(const sf::Vector2f& ballPos, const sf::Vector2f& ballDir);
+    void MoveTowards(float yDest);
+    float CalculateYGoal(const sf::Vector2f& ballPos, const sf::Vector2f& ballDir);
+
+    float dirY = 1.0f;
+    float timer = 0.0f;
+    std::mt19937 rnd{ std::random_device{}() };
+    std::uniform_real_distribution<float> dist{ -aimError, aimError };
 };
-

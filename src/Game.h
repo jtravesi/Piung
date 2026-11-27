@@ -1,28 +1,26 @@
 #pragma once
 
-#include "GameState.h"
-#include "PlayerPaddle.h"
-#include "EnemyPaddle.h"
+#include "State.h"
 
 class Game
 {
 public:
-	Game();
+    Game();
 
-	void UpdateEvents();
-	void Update();
-	void Render();
+    void UpdateEvents();
+    void Update();
+    void Render();
 
-	bool IsRunning() const;
+    bool IsRunning() const;
 
 private:
-	sf::RenderWindow window;
-	sf::Event e;
-	sf::Clock clock;
-	bool running = true;
+    static constexpr unsigned int screenWidth = 800;
+    static constexpr unsigned int screenHeight = 600;
+    static constexpr float maxFrameTime = 1.0f / 30.0f;
 
-	std::stack<std::unique_ptr<State>> states;
+    sf::RenderWindow window;
+    sf::Clock clock;
+    bool running = true;
 
-	static constexpr int screenWidth = 800;
-	static constexpr int screenHeight = 600;
+    std::stack<std::unique_ptr<State>> states;
 };

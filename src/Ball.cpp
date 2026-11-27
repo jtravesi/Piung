@@ -1,104 +1,107 @@
 #include "Ball.h"
+#include <cmath>
 
 Ball::Ball(const sf::Vector2f& startPos, const sf::Vector2f& startDir)
-	:
-	startPos(startPos),
-	startDir(startDir),
-	pos(startPos),
-	dir(startDir),
-	speed(startSpeed)
+    :
+    startPos(startPos),
+    startDir(startDir.normalized()),
+    pos(startPos),
+    dir(this->startDir)
 {
-	NormalizeDir();
-
-	ball.setPosition(pos);
-	ball.setRadius(radius);
-	ball.setFillColor(sf::Color::White);
+    ball.setPosition(pos);
+    ball.setRadius(radius);
+    ball.setFillColor(sf::Color::White);
 }
 
-void Ball::Render(sf::RenderTarget& target)
+void Ball::Render(sf::RenderTarget& target) const
 {
-	target.draw(ball);
+    target.draw(ball);
 }
 
-void Ball::Update(const float& dt)
+void Ball::Update(float dt)
 {
-	pos += dir * speed * dt;
-	ball.setPosition(pos);
+    pos += dir * speed * dt;
+    ball.setPosition(pos);
 }
 
-void Ball::ReboundX()
+void Ball::Rebound(sf::Vector2f newDir)
 {
-	dir.x = -dir.x;
-}
-
-void Ball::ReboundY()
-{
-	dir.y = -dir.y;
-}
-
-void Ball::Rebound(sf::Vector2f dir)
-{
-	this->dir = dir;
-
-	NormalizeDir();
+    dir = newDir.normalized();
 }
 
 void Ball::IncrementSpeed()
 {
-	speed += speedRate;
+    speed += speedRate;
 }
 
 void Ball::Respawn()
 {
-	startDirX *= -1;
-	pos = startPos;
-	dir.x = startDirX * startDir.x;
-	dir.y = startDir.y;
-	speed = startSpeed;
+    startDirX = -startDirX;
+    pos = startPos;
+    dir = { startDirX * startDir.x, startDir.y };
+    speed = startSpeed;
+    ball.setPosition(pos);
 }
 
 WallCollisions Ball::DoWallCollisions(const sf::FloatRect& walls)
 {
-	const float right = walls.left + walls.width;
-	const float bottom = walls.top + walls.height;
-	const float margin = 200.0f;
+    const float left = walls.position.x;
+    const float top = walls.position.y;
+    const float right = left + walls.size.x;
+    const float bottom = top + walls.size.y;
 
-	if(pos.y <= walls.top || pos.y + 2.0f * radius >= bottom)
-	{
-		ReboundY();
-		return WallCollisions::TOPBOTTOMWALL;
-	}
+    // Put the ball back inside and point it away from the wall, rather
+    // than only flipping its direction, so two consecutive checks can never
+    // cancel a bounce out.
+    if (pos.y <= top)
+    {
+        pos.y = top;
+        dir.y = std::abs(dir.y);
+        ball.setPosition(pos);
+        return WallCollisions::TOPBOTTOMWALL;
+    }
+    if (pos.y + GetDiameter() >= bottom)
+    {
+        pos.y = bottom - GetDiameter();
+        dir.y = -std::abs(dir.y);
+        ball.setPosition(pos);
+        return WallCollisions::TOPBOTTOMWALL;
+    }
 
-	if (pos.x < walls.left - margin)
-	{
-		return WallCollisions::PLAYERSIDE;
-	}
-	else if (pos.x > right + margin)
-	{
-		return WallCollisions::ENEMYSIDE;
-	}
+    if (pos.x < left - goalMargin)
+    {
+        return WallCollisions::PLAYERSIDE;
+    }
+    if (pos.x > right + goalMargin)
+    {
+        return WallCollisions::ENEMYSIDE;
+    }
 
-	return WallCollisions::NONE;
+    return WallCollisions::NONE;
+}
+
+void Ball::SetX(float x)
+{
+    pos.x = x;
+    ball.setPosition(pos);
 }
 
 sf::FloatRect Ball::GetRect() const
 {
-	return ball.getGlobalBounds();
+    return ball.getGlobalBounds();
 }
 
-const sf::Vector2f Ball::GetPosition() const
+sf::Vector2f Ball::GetPosition() const
 {
-	return pos;
+    return pos;
 }
 
-const sf::Vector2f Ball::GetDirection() const
+sf::Vector2f Ball::GetDirection() const
 {
-	return dir;
+    return dir;
 }
 
-void Ball::NormalizeDir()
+float Ball::GetDiameter() const
 {
-	const float norm = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-
-	dir /= norm;
+    return 2.0f * radius;
 }

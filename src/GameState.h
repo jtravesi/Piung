@@ -5,43 +5,45 @@
 #include "PlayerPaddle.h"
 #include "EnemyPaddle.h"
 
-class GameState :
-    public State
+#include <SFML/Audio.hpp>
+
+class GameState : public State
 {
 public:
-    // Constructor
-    GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth, int screenHeight);
+    GameState(std::stack<std::unique_ptr<State>>& states, unsigned int screenWidth, unsigned int screenHeight);
 
-    // Core functions
-    virtual void Update(float dt);
-    virtual void Render(sf::RenderTarget& target);
-
-	// Functions
-	void PlaySound(sf::Sound& sound, std::string fileName);
+    void Update(float dt) override;
+    void Render(sf::RenderTarget& target) override;
 
 private:
-	/* Logic */
-	bool gameStarted = false;
+    // Layout
+    static constexpr float paddleWidth = 15.0f;
+    static constexpr float paddleHeight = 125.0f;
+    // Distance from each side of the screen to the left edge of its paddle
+    static constexpr float paddleMargin = 50.0f;
+    static constexpr unsigned int textSize = 40;
 
-	/* Entities*/
-	sf::FloatRect walls;
-	Ball ball;
-	PlayerPaddle playerPaddle;
-	EnemyPaddle enemyPaddle;
+    bool gameStarted = false;
 
-	/* UI */
-	sf::Font font;
-	sf::Text startText;
-	sf::Text playerScoreText;
-	sf::Text enemyScoreText;
+    // Entities
+    sf::FloatRect walls;
+    Ball ball;
+    PlayerPaddle playerPaddle;
+    EnemyPaddle enemyPaddle;
 
-	/* Score */
-	int playerScore = 0;
-	int enemyScore = 0;
+    // UI
+    sf::Font font;
+    sf::Text startText{ font };
+    sf::Text playerScoreText{ font };
+    sf::Text enemyScoreText{ font };
 
-	/* Sound */
-	sf::SoundBuffer soundBuffer;
-	sf::Sound hitSound;
-	sf::Sound pointSound;
+    // Score
+    int playerScore = 0;
+    int enemyScore = 0;
+
+    // Sound
+    sf::SoundBuffer hitBuffer;
+    sf::SoundBuffer pointBuffer;
+    sf::Sound hitSound{ hitBuffer };
+    sf::Sound pointSound{ pointBuffer };
 };
-
