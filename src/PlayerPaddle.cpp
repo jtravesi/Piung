@@ -8,11 +8,11 @@ PlayerPaddle::PlayerPaddle(sf::Vector2f pos, float width, float height)
 
 void PlayerPaddle::Update(const float& dt, const Ball& ball, const sf::FloatRect& walls)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 	{
 		pos.y -= speed * dt;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
 	{
 		pos.y += speed * dt;
 	}

@@ -17,7 +17,6 @@ public:
 
 private:
 	sf::RenderWindow window;
-	sf::Event e;
 	sf::Clock clock;
 	bool running = true;
 

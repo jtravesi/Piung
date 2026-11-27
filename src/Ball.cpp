@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include <cmath>
 
 Ball::Ball(const sf::Vector2f& startPos, const sf::Vector2f& startDir)
 	:
@@ -59,17 +60,19 @@ void Ball::Respawn()
 
 WallCollisions Ball::DoWallCollisions(const sf::FloatRect& walls)
 {
-	const float right = walls.left + walls.width;
-	const float bottom = walls.top + walls.height;
+	const float left = walls.position.x;
+	const float top = walls.position.y;
+	const float right = left + walls.size.x;
+	const float bottom = top + walls.size.y;
 	const float margin = 200.0f;
 
-	if(pos.y <= walls.top || pos.y + 2.0f * radius >= bottom)
+	if(pos.y <= top || pos.y + 2.0f * radius >= bottom)
 	{
 		ReboundY();
 		return WallCollisions::TOPBOTTOMWALL;
 	}
 
-	if (pos.x < walls.left - margin)
+	if (pos.x < left - margin)
 	{
 		return WallCollisions::PLAYERSIDE;
 	}

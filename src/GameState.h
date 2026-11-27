@@ -31,9 +31,9 @@ private:
 
 	/* UI */
 	sf::Font font;
-	sf::Text startText;
-	sf::Text playerScoreText;
-	sf::Text enemyScoreText;
+	sf::Text startText{ font };
+	sf::Text playerScoreText{ font };
+	sf::Text enemyScoreText{ font };
 
 	/* Score */
 	int playerScore = 0;
@@ -41,7 +41,7 @@ private:
 
 	/* Sound */
 	sf::SoundBuffer soundBuffer;
-	sf::Sound hitSound;
-	sf::Sound pointSound;
+	sf::Sound hitSound{ soundBuffer };
+	sf::Sound pointSound{ soundBuffer };
 };
 

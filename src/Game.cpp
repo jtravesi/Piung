@@ -3,7 +3,7 @@
 
 Game::Game()
     :
-    window(sf::VideoMode(screenWidth, screenHeight), "Piung!", sf::Style::Close | sf::Style::Titlebar)
+    window(sf::VideoMode({ screenWidth, screenHeight }), "Piung!", sf::Style::Close | sf::Style::Titlebar)
 {
 
     states.push(std::make_unique<GameState>(states, screenWidth, screenHeight));
@@ -12,9 +12,9 @@ Game::Game()
 
 void Game::UpdateEvents()
 {
-    while (window.pollEvent(e))
+    while (const std::optional event = window.pollEvent())
     {
-        if (e.type == sf::Event::Closed)
+        if (event->is<sf::Event::Closed>())
             running = false;
     }
 }

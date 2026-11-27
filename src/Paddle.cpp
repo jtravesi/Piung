@@ -23,9 +23,9 @@ bool Paddle::DoBallCollision(Ball& ball) const
 	sf::FloatRect ballRect = ball.GetRect();
 
 	// Collision happens
-	if (paddleRect.intersects(ballRect))
+	if (paddleRect.findIntersection(ballRect))
 	{
-		const float distFromCenter = (ballRect.top + ballRect.height / 2.0f) - (pos.y + height / 2.0f);
+		const float distFromCenter = (ballRect.position.y + ballRect.size.y / 2.0f) - (pos.y + height / 2.0f);
 		const float ratio = distFromCenter / (height / 2.0f);
 
 		ball.Rebound({ ballColllisionDir, ratio });
@@ -59,10 +59,11 @@ bool Paddle::DoBallCollision(Ball& ball) const
 
 float Paddle::ClampScreen(float y, const sf::FloatRect& walls)
 {
-	const float wallsBottom = walls.top + walls.height;
-	if (y <= walls.top)
+	const float wallsTop = walls.position.y;
+	const float wallsBottom = wallsTop + walls.size.y;
+	if (y <= wallsTop)
 	{
-		return walls.top;
+		return wallsTop;
 	}
 	else if (y + height > wallsBottom)
 	{
