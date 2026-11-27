@@ -71,3 +71,4 @@ add_custom_command(TARGET piung POST_BUILD
 
 install(TARGETS piung RUNTIME DESTINATION .)
 install(DIRECTORY Resources DESTINATION .)
+install(FILES LICENSE README.md DESTINATION .)
