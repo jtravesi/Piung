@@ -66,9 +66,21 @@ WallCollisions Ball::DoWallCollisions(const sf::FloatRect& walls)
     const float bottom = top + walls.size.y;
     const float margin = 200.0f;
 
-    if(pos.y <= top || pos.y + 2.0f * radius >= bottom)
+    // Put the ball back inside and point it away from the wall, rather
+    // than only flipping its direction, so two consecutive checks can never
+    // cancel a bounce out.
+    if (pos.y <= top)
     {
-        ReboundY();
+        pos.y = top;
+        dir.y = std::abs(dir.y);
+        ball.setPosition(pos);
+        return WallCollisions::TOPBOTTOMWALL;
+    }
+    if (pos.y + 2.0f * radius >= bottom)
+    {
+        pos.y = bottom - 2.0f * radius;
+        dir.y = -std::abs(dir.y);
+        ball.setPosition(pos);
         return WallCollisions::TOPBOTTOMWALL;
     }
 
@@ -82,6 +94,17 @@ WallCollisions Ball::DoWallCollisions(const sf::FloatRect& walls)
     }
 
     return WallCollisions::NONE;
+}
+
+void Ball::SetX(float x)
+{
+    pos.x = x;
+    ball.setPosition(pos);
+}
+
+float Ball::GetDiameter() const
+{
+    return 2.0f * radius;
 }
 
 sf::FloatRect Ball::GetRect() const

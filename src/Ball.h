@@ -28,6 +28,7 @@ public:
     void Rebound(sf::Vector2f dir);
     void IncrementSpeed();
     void Respawn();
+    void SetX(float x);
 
     // Collision
     WallCollisions DoWallCollisions(const sf::FloatRect& walls);
@@ -36,6 +37,7 @@ public:
     sf::FloatRect GetRect() const;
     const sf::Vector2f GetPosition() const;
     const sf::Vector2f GetDirection() const;
+    float GetDiameter() const;
 
 private:
     // Shape
