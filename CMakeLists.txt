@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Link the MSVC runtime statically (and SFML's, below) so the Windows
+# executable runs without the Visual C++ Redistributable installed.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
@@ -24,6 +28,7 @@ else()
     # Build FreeType, Ogg, Vorbis and FLAC into the binary too, so release
     # builds don't depend on the versions a given distro ships.
     set(SFML_USE_SYSTEM_DEPS OFF CACHE BOOL "" FORCE)
+    set(SFML_USE_STATIC_STD_LIBS ON CACHE BOOL "" FORCE)
     FetchContent_Declare(SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
         GIT_TAG 3.1.0
