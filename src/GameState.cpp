@@ -39,6 +39,13 @@ GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth
 
 void GameState::Update(float dt)
 {
+    // Escape quits from the start screen as well as during play.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+    {
+        EndState();
+        return;
+    }
+
     if (!gameStarted)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
@@ -75,11 +82,6 @@ void GameState::Update(float dt)
         if (playerPaddle.DoBallCollision(ball) || enemyPaddle.DoBallCollision(ball))
         {
             hitSound.play();
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-        {
-            EndState();
         }
     }
 }
