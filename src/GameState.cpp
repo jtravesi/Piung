@@ -13,6 +13,13 @@ GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth
     {
         sf::err() << "Error al cargar la fuente\n";
     }
+    // Sounds are loaded once; each has its own buffer so a point sound
+    // never cuts off a hit sound that is still playing.
+    if (!hitBuffer.loadFromFile("Resources/Audio/hitSound.ogg") ||
+        !pointBuffer.loadFromFile("Resources/Audio/pointSound.ogg"))
+    {
+        sf::err() << "Error al cargar los sonidos\n";
+    }
     // Start text
     startText.setCharacterSize(40);
     startText.setPosition({ screenWidth / 4.0f, screenHeight / 3.0f });
@@ -50,7 +57,7 @@ void GameState::Update(float dt)
             ball.Respawn();
             ++enemyScore;
             enemyScoreText.setString(std::to_string(enemyScore));
-            PlaySound(hitSound, "Resources/Audio/pointSound.ogg");
+            pointSound.play();
         }
         // Score for player
         else if (wallCollision == WallCollisions::ENEMYSIDE)
@@ -58,7 +65,7 @@ void GameState::Update(float dt)
             ball.Respawn();
             ++playerScore;
             playerScoreText.setString(std::to_string(playerScore));
-            PlaySound(hitSound, "Resources/Audio/pointSound.ogg");
+            pointSound.play();
         }
 
         playerPaddle.Update(dt, ball, walls);
@@ -66,7 +73,7 @@ void GameState::Update(float dt)
 
         if (playerPaddle.DoBallCollision(ball) || enemyPaddle.DoBallCollision(ball))
         {
-            PlaySound(hitSound, "Resources/Audio/hitSound.ogg");
+            hitSound.play();
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
@@ -89,18 +96,5 @@ void GameState::Render(sf::RenderTarget& target)
         enemyPaddle.Render(target);
         target.draw(playerScoreText);
         target.draw(enemyScoreText);
-    }
-}
-
-void GameState::PlaySound(sf::Sound& sound, std::string fileName)
-{
-    if (!soundBuffer.loadFromFile(fileName))
-    {
-        sf::err() << "Error al cargar archivo " << fileName << std::endl;
-    }
-    else
-    {
-        sound.setBuffer(soundBuffer);
-        sound.play();
     }
 }

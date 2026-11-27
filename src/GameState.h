@@ -16,9 +16,6 @@ public:
     virtual void Update(float dt);
     virtual void Render(sf::RenderTarget& target);
 
-    // Functions
-    void PlaySound(sf::Sound& sound, std::string fileName);
-
 private:
     /* Logic */
     bool gameStarted = false;
@@ -40,7 +37,8 @@ private:
     int enemyScore = 0;
 
     /* Sound */
-    sf::SoundBuffer soundBuffer;
-    sf::Sound hitSound{ soundBuffer };
-    sf::Sound pointSound{ soundBuffer };
+    sf::SoundBuffer hitBuffer;
+    sf::SoundBuffer pointBuffer;
+    sf::Sound hitSound{ hitBuffer };
+    sf::Sound pointSound{ pointBuffer };
 };
