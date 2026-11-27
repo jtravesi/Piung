@@ -1,5 +1,5 @@
 #include "Game.h"
-#include <iostream>
+#include <algorithm>
 
 Game::Game()
     :
@@ -21,7 +21,10 @@ void Game::UpdateEvents()
 
 void Game::Update()
 {
-    const float dt = clock.restart().asSeconds();
+    // A long pause between frames would move the ball far enough in one
+    // step to pass through a paddle, so cap the step at 1/30 s; the game
+    // slows down instead of skipping collisions.
+    const float dt = std::min(clock.restart().asSeconds(), maxFrameTime);
 
     if (!states.empty())
     {

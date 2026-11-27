@@ -24,4 +24,5 @@ private:
 
     static constexpr int screenWidth = 800;
     static constexpr int screenHeight = 600;
+    static constexpr float maxFrameTime = 1.0f / 30.0f;
 };
