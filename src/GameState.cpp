@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "Resources.h"
 
 GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth, int screenHeight)
     :
@@ -9,14 +10,14 @@ GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth
     enemyPaddle({ 750.0f, screenHeight / 3.0f }, 15.0f, 125.0f)
 {
     // Font loading
-    if (!font.openFromFile("Resources/Fonts/bit5x3.ttf"))
+    if (!font.openFromFile(ResourcePath("Fonts/bit5x3.ttf")))
     {
         sf::err() << "Error al cargar la fuente\n";
     }
     // Sounds are loaded once; each has its own buffer so a point sound
     // never cuts off a hit sound that is still playing.
-    if (!hitBuffer.loadFromFile("Resources/Audio/hitSound.ogg") ||
-        !pointBuffer.loadFromFile("Resources/Audio/pointSound.ogg"))
+    if (!hitBuffer.loadFromFile(ResourcePath("Audio/hitSound.ogg")) ||
+        !pointBuffer.loadFromFile(ResourcePath("Audio/pointSound.ogg")))
     {
         sf::err() << "Error al cargar los sonidos\n";
     }

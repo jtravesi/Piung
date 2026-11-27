@@ -41,7 +41,8 @@ add_executable(piung
     src/Ball.cpp
     src/Paddle.cpp
     src/PlayerPaddle.cpp
-    src/EnemyPaddle.cpp)
+    src/EnemyPaddle.cpp
+    src/Resources.cpp)
 
 target_link_libraries(piung PRIVATE SFML::Graphics SFML::Audio)
 
