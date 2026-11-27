@@ -15,8 +15,8 @@ GameState::GameState(std::stack<std::unique_ptr<State>>& states, unsigned int sc
     }
     // Sounds are loaded once; each has its own buffer so a point sound
     // never cuts off a hit sound that is still playing.
-    if (!hitBuffer.loadFromFile(ResourcePath("Audio/hitSound.ogg")) ||
-        !pointBuffer.loadFromFile(ResourcePath("Audio/pointSound.ogg")))
+    if (!hitBuffer.loadFromFile(ResourcePath("Audio/hit.wav")) ||
+        !pointBuffer.loadFromFile(ResourcePath("Audio/point.wav")))
     {
         sf::err() << "Could not load the sounds\n";
     }
