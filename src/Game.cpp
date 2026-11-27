@@ -1,11 +1,11 @@
 #include "Game.h"
+#include "GameState.h"
 #include <algorithm>
 
 Game::Game()
     :
     window(sf::VideoMode({ screenWidth, screenHeight }), "Piung!", sf::Style::Close | sf::Style::Titlebar)
 {
-
     states.push(std::make_unique<GameState>(states, screenWidth, screenHeight));
     window.setFramerateLimit(120);
 }
@@ -47,18 +47,15 @@ void Game::Update()
     {
         running = false;
     }
-    
 }
 
 void Game::Render()
 {
     window.clear();
-    // Render things here
     if (!states.empty())
     {
         states.top()->Render(window);
     }
-    //
     window.display();
 }
 

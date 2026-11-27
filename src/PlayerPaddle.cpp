@@ -6,7 +6,7 @@ PlayerPaddle::PlayerPaddle(sf::Vector2f pos, float width, float height)
 {
 }
 
-void PlayerPaddle::Update(const float& dt, const Ball& ball, const sf::FloatRect& walls)
+void PlayerPaddle::Update(float dt, const Ball& /*ball*/, const sf::FloatRect& walls)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
     {

@@ -1,41 +1,38 @@
 #include "GameState.h"
 #include "Resources.h"
 
-GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth, int screenHeight)
+GameState::GameState(std::stack<std::unique_ptr<State>>& states, unsigned int screenWidth, unsigned int screenHeight)
     :
     State(states),
     walls({ 0.0f, 0.0f }, { static_cast<float>(screenWidth), static_cast<float>(screenHeight) }),
-    ball({ screenWidth / 2.0f, screenHeight / 2.0f }, { 1.0f, 0.0f }),
-    playerPaddle({ 50.0f, screenHeight / 3.0f }, 15.0f, 125.0f),
-    enemyPaddle({ 750.0f, screenHeight / 3.0f }, 15.0f, 125.0f)
+    ball({ walls.size.x / 2.0f, walls.size.y / 2.0f }, { 1.0f, 0.0f }),
+    playerPaddle({ paddleMargin, walls.size.y / 3.0f }, paddleWidth, paddleHeight),
+    enemyPaddle({ walls.size.x - paddleMargin, walls.size.y / 3.0f }, paddleWidth, paddleHeight)
 {
-    // Font loading
     if (!font.openFromFile(ResourcePath("Fonts/bit5x3.ttf")))
     {
-        sf::err() << "Error al cargar la fuente\n";
+        sf::err() << "Could not load the font\n";
     }
     // Sounds are loaded once; each has its own buffer so a point sound
     // never cuts off a hit sound that is still playing.
     if (!hitBuffer.loadFromFile(ResourcePath("Audio/hitSound.ogg")) ||
         !pointBuffer.loadFromFile(ResourcePath("Audio/pointSound.ogg")))
     {
-        sf::err() << "Error al cargar los sonidos\n";
+        sf::err() << "Could not load the sounds\n";
     }
-    // Start text
-    startText.setCharacterSize(40);
-    startText.setPosition({ screenWidth / 4.0f, screenHeight / 3.0f });
+
+    startText.setCharacterSize(textSize);
+    startText.setPosition({ walls.size.x / 4.0f, walls.size.y / 3.0f });
     startText.setString("Press Enter to start");
-    // Player Score Text
-    playerScoreText.setCharacterSize(40);
-    playerScoreText.setPosition({ screenWidth / 5.0f, screenHeight / 10.0f });
+
+    playerScoreText.setCharacterSize(textSize);
+    playerScoreText.setPosition({ walls.size.x / 5.0f, walls.size.y / 10.0f });
     playerScoreText.setString(std::to_string(playerScore));
 
-    // Enemy Score Text
-    enemyScoreText.setCharacterSize(40);
-    enemyScoreText.setPosition({ 4.0f * screenWidth / 5.0f, screenHeight / 10.0f });
+    enemyScoreText.setCharacterSize(textSize);
+    enemyScoreText.setPosition({ 4.0f * walls.size.x / 5.0f, walls.size.y / 10.0f });
     enemyScoreText.setString(std::to_string(enemyScore));
 }
-
 
 void GameState::Update(float dt)
 {

@@ -2,11 +2,9 @@
 
 EnemyPaddle::EnemyPaddle(sf::Vector2f pos, float width, float height)
     :
-    Paddle(pos, width, height),
-    rnd(rd()),
-    dist(-50, 50)
+    Paddle(pos, width, height)
 {
-    ballColllisionDir = -1.0f;
+    ballCollisionDir = -1.0f;
 }
 
 void EnemyPaddle::MoveTowards(float yDest)
@@ -20,26 +18,22 @@ void EnemyPaddle::MoveTowards(float yDest)
     {
         dirY = 1.0f;
     }
-    // 50.0f is a magic number :(
-    if(yDest >= posYCenter - 50.0f && yDest <= posYCenter + 50.0f)
+    if (yDest >= posYCenter - deadZone && yDest <= posYCenter + deadZone)
     {
         dirY = 0.0f;
     }
 }
 
-void EnemyPaddle::Update(const float& dt, const Ball& ball, const sf::FloatRect& walls)
+void EnemyPaddle::Update(float dt, const Ball& ball, const sf::FloatRect& walls)
 {
     timer += dt;
-    
+
     if (timer >= movementDelay)
     {
-        const float nextBallPosY = CalculateYGoal(ball.GetPosition(), ball.GetDirection());
-        
-        MoveTowards(nextBallPosY);
+        MoveTowards(CalculateYGoal(ball.GetPosition(), ball.GetDirection()));
         timer = 0.0f;
     }
-    
-    
+
     pos.y += dirY * speed * dt;
     pos.y = ClampScreen(pos.y, walls);
     paddle.setPosition(pos);
@@ -47,10 +41,10 @@ void EnemyPaddle::Update(const float& dt, const Ball& ball, const sf::FloatRect&
 
 float EnemyPaddle::CalculateYGoal(const sf::Vector2f& ballPos, const sf::Vector2f& ballDir)
 {
-    // Calculates intersetion of the linear equation which ball follows, then adds a little error to more human behavior.
+    // Where the ball's current straight line crosses the paddle's x, plus
+    // a random error so the AI plays more like a human.
     const float m = ballDir.y / ballDir.x;
     const float n = -m * ballPos.x + ballPos.y;
 
-
-    return m * pos.x + n + (float)dist(rnd);
+    return m * pos.x + n + dist(rnd);
 }
