@@ -26,6 +26,14 @@ void Game::Update()
     // slows down instead of skipping collisions.
     const float dt = std::min(clock.restart().asSeconds(), maxFrameTime);
 
+    // sf::Keyboard reads the global keyboard state, so without this keys
+    // pressed in other applications would move the paddle or quit the
+    // game. Pause instead while the window is in the background.
+    if (!window.hasFocus())
+    {
+        return;
+    }
+
     if (!states.empty())
     {
         states.top()->Update(dt);
