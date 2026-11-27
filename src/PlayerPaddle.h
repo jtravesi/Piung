@@ -12,4 +12,3 @@ public:
     // Movement
     virtual void Update(const float& dt, const Ball& ball, const sf::FloatRect& walls);
 };
-

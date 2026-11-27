@@ -1,12 +1,12 @@
 #include "GameState.h"
 
 GameState::GameState(std::stack<std::unique_ptr<State>>& states, int screenWidth, int screenHeight)
-	:
-	State(states),
-	walls({ 0.0f, 0.0f }, { static_cast<float>(screenWidth), static_cast<float>(screenHeight) }),
-	ball({ screenWidth / 2.0f, screenHeight / 2.0f }, { 1.0f, 0.0f }),
-	playerPaddle({ 50.0f, screenHeight / 3.0f }, 15.0f, 125.0f),
-	enemyPaddle({ 750.0f, screenHeight / 3.0f }, 15.0f, 125.0f)
+    :
+    State(states),
+    walls({ 0.0f, 0.0f }, { static_cast<float>(screenWidth), static_cast<float>(screenHeight) }),
+    ball({ screenWidth / 2.0f, screenHeight / 2.0f }, { 1.0f, 0.0f }),
+    playerPaddle({ 50.0f, screenHeight / 3.0f }, 15.0f, 125.0f),
+    enemyPaddle({ 750.0f, screenHeight / 3.0f }, 15.0f, 125.0f)
 {
     // Font loading
     if (!font.openFromFile("Resources/Fonts/bit5x3.ttf"))

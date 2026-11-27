@@ -16,32 +16,31 @@ public:
     virtual void Update(float dt);
     virtual void Render(sf::RenderTarget& target);
 
-	// Functions
-	void PlaySound(sf::Sound& sound, std::string fileName);
+    // Functions
+    void PlaySound(sf::Sound& sound, std::string fileName);
 
 private:
-	/* Logic */
-	bool gameStarted = false;
+    /* Logic */
+    bool gameStarted = false;
 
-	/* Entities*/
-	sf::FloatRect walls;
-	Ball ball;
-	PlayerPaddle playerPaddle;
-	EnemyPaddle enemyPaddle;
+    /* Entities*/
+    sf::FloatRect walls;
+    Ball ball;
+    PlayerPaddle playerPaddle;
+    EnemyPaddle enemyPaddle;
 
-	/* UI */
-	sf::Font font;
-	sf::Text startText{ font };
-	sf::Text playerScoreText{ font };
-	sf::Text enemyScoreText{ font };
+    /* UI */
+    sf::Font font;
+    sf::Text startText{ font };
+    sf::Text playerScoreText{ font };
+    sf::Text enemyScoreText{ font };
 
-	/* Score */
-	int playerScore = 0;
-	int enemyScore = 0;
+    /* Score */
+    int playerScore = 0;
+    int enemyScore = 0;
 
-	/* Sound */
-	sf::SoundBuffer soundBuffer;
-	sf::Sound hitSound{ soundBuffer };
-	sf::Sound pointSound{ soundBuffer };
+    /* Sound */
+    sf::SoundBuffer soundBuffer;
+    sf::Sound hitSound{ soundBuffer };
+    sf::Sound pointSound{ soundBuffer };
 };
-

@@ -7,21 +7,21 @@
 class Game
 {
 public:
-	Game();
+    Game();
 
-	void UpdateEvents();
-	void Update();
-	void Render();
+    void UpdateEvents();
+    void Update();
+    void Render();
 
-	bool IsRunning() const;
+    bool IsRunning() const;
 
 private:
-	sf::RenderWindow window;
-	sf::Clock clock;
-	bool running = true;
+    sf::RenderWindow window;
+    sf::Clock clock;
+    bool running = true;
 
-	std::stack<std::unique_ptr<State>> states;
+    std::stack<std::unique_ptr<State>> states;
 
-	static constexpr int screenWidth = 800;
-	static constexpr int screenHeight = 600;
+    static constexpr int screenWidth = 800;
+    static constexpr int screenHeight = 600;
 };

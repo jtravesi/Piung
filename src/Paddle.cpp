@@ -2,75 +2,75 @@
 #include <iostream>
 
 Paddle::Paddle(sf::Vector2f pos, float width, float height)
-	:
-	pos(pos),
-	width(width),
-	height(height)
+    :
+    pos(pos),
+    width(width),
+    height(height)
 {
-	paddle.setPosition(pos);
-	paddle.setFillColor(sf::Color::White);
-	paddle.setSize(sf::Vector2f(width, height));
+    paddle.setPosition(pos);
+    paddle.setFillColor(sf::Color::White);
+    paddle.setSize(sf::Vector2f(width, height));
 }
 
 void Paddle::Render(sf::RenderTarget& target)
 {
-	target.draw(paddle);
+    target.draw(paddle);
 }
 
 bool Paddle::DoBallCollision(Ball& ball) const
 {
-	sf::FloatRect paddleRect = paddle.getGlobalBounds();
-	sf::FloatRect ballRect = ball.GetRect();
+    sf::FloatRect paddleRect = paddle.getGlobalBounds();
+    sf::FloatRect ballRect = ball.GetRect();
 
-	// Collision happens
-	if (paddleRect.findIntersection(ballRect))
-	{
-		const float distFromCenter = (ballRect.position.y + ballRect.size.y / 2.0f) - (pos.y + height / 2.0f);
-		const float ratio = distFromCenter / (height / 2.0f);
+    // Collision happens
+    if (paddleRect.findIntersection(ballRect))
+    {
+        const float distFromCenter = (ballRect.position.y + ballRect.size.y / 2.0f) - (pos.y + height / 2.0f);
+        const float ratio = distFromCenter / (height / 2.0f);
 
-		ball.Rebound({ ballColllisionDir, ratio });
-		ball.IncrementSpeed();
+        ball.Rebound({ ballColllisionDir, ratio });
+        ball.IncrementSpeed();
 
-		//Original way of colliding with the ball. I'll let there cause why not :D
+        //Original way of colliding with the ball. I'll let there cause why not :D
 
 
-		/*// Top collision
-		if (ballRect.top <= pos.y + height / 3.0f)
-		{
-			ball.Rebound({ ballColllisionDir, -0.75f });
-		}
-		// Medium collision
-		if (ballRect.top > pos.y + height / 3.0f && ballRect.top < pos.y + 2.0f * height / 3.0f)
-		{
-			ball.Rebound({ ballColllisionDir, 0.0f });
-		}
-		// Bottom collision
-		if (ballRect.top >= pos.y + 2.0f * height / 3.0f)
-		{
-			ball.Rebound({ ballColllisionDir, 0.75f });
-		}
-		*/
+        /*// Top collision
+        if (ballRect.top <= pos.y + height / 3.0f)
+        {
+            ball.Rebound({ ballColllisionDir, -0.75f });
+        }
+        // Medium collision
+        if (ballRect.top > pos.y + height / 3.0f && ballRect.top < pos.y + 2.0f * height / 3.0f)
+        {
+            ball.Rebound({ ballColllisionDir, 0.0f });
+        }
+        // Bottom collision
+        if (ballRect.top >= pos.y + 2.0f * height / 3.0f)
+        {
+            ball.Rebound({ ballColllisionDir, 0.75f });
+        }
+        */
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 float Paddle::ClampScreen(float y, const sf::FloatRect& walls)
 {
-	const float wallsTop = walls.position.y;
-	const float wallsBottom = wallsTop + walls.size.y;
-	if (y <= wallsTop)
-	{
-		return wallsTop;
-	}
-	else if (y + height > wallsBottom)
-	{
-		return wallsBottom - height;
-	}
-	else
-	{
-		return y;
-	}
+    const float wallsTop = walls.position.y;
+    const float wallsBottom = wallsTop + walls.size.y;
+    if (y <= wallsTop)
+    {
+        return wallsTop;
+    }
+    else if (y + height > wallsBottom)
+    {
+        return wallsBottom - height;
+    }
+    else
+    {
+        return y;
+    }
 }
